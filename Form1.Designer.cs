@@ -28,12 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            ListSong = new ListBox();
+            SuspendLayout();
+            // 
+            // ListSong
+            // 
+            ListSong.FormattingEnabled = true;
+            ListSong.Location = new Point(12, 12);
+            ListSong.Name = "ListSong";
+            ListSong.Size = new Size(380, 424);
+            ListSong.TabIndex = 0;
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(9F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(404, 450);
+            Controls.Add(ListSong);
+            Name = "Form1";
+            Text = "애창곡";
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private ListBox ListSong;
     }
 }
