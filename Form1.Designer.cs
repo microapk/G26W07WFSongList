@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ListSong = new ListBox();
+            ListCar = new ListBox();
             txtTitle = new TextBox();
             txtArtist = new TextBox();
             txtRating = new TextBox();
@@ -38,21 +38,21 @@
             txtFilter = new TextBox();
             SuspendLayout();
             // 
-            // ListSong
+            // ListCar
             // 
-            ListSong.FormattingEnabled = true;
-            ListSong.Location = new Point(12, 52);
-            ListSong.Name = "ListSong";
-            ListSong.Size = new Size(480, 344);
-            ListSong.TabIndex = 0;
-            ListSong.SelectedIndexChanged += OnChanged;
-            ListSong.DoubleClick += OnYoutube;
+            ListCar.FormattingEnabled = true;
+            ListCar.Location = new Point(12, 52);
+            ListCar.Name = "ListCar";
+            ListCar.Size = new Size(480, 344);
+            ListCar.TabIndex = 0;
+            ListCar.SelectedIndexChanged += OnChanged;
+            ListCar.DoubleClick += OnYoutube;
             // 
             // txtTitle
             // 
             txtTitle.Location = new Point(12, 402);
             txtTitle.Name = "txtTitle";
-            txtTitle.PlaceholderText = "제목";
+            txtTitle.PlaceholderText = "이름";
             txtTitle.Size = new Size(192, 27);
             txtTitle.TabIndex = 1;
             // 
@@ -60,7 +60,7 @@
             // 
             txtArtist.Location = new Point(210, 402);
             txtArtist.Name = "txtArtist";
-            txtArtist.PlaceholderText = "가수";
+            txtArtist.PlaceholderText = "제조사";
             txtArtist.Size = new Size(86, 27);
             txtArtist.TabIndex = 2;
             // 
@@ -77,7 +77,7 @@
             txtSelected.Enabled = false;
             txtSelected.Location = new Point(12, 441);
             txtSelected.Name = "txtSelected";
-            txtSelected.PlaceholderText = "삭제를 위해 선택된 노래";
+            txtSelected.PlaceholderText = "선택된 자동차";
             txtSelected.ReadOnly = true;
             txtSelected.Size = new Size(380, 27);
             txtSelected.TabIndex = 4;
@@ -108,7 +108,7 @@
             // 
             txtFilter.Location = new Point(12, 12);
             txtFilter.Name = "txtFilter";
-            txtFilter.PlaceholderText = "제목 또는 가수 검색";
+            txtFilter.PlaceholderText = "이름 또는 제조사 검색";
             txtFilter.Size = new Size(480, 27);
             txtFilter.TabIndex = 7;
             txtFilter.TextChanged += OnFilterChanged;
@@ -125,16 +125,16 @@
             Controls.Add(txtRating);
             Controls.Add(txtArtist);
             Controls.Add(txtTitle);
-            Controls.Add(ListSong);
+            Controls.Add(ListCar);
             Name = "Form1";
-            Text = "애창곡";
+            Text = "자동차 리스트";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private ListBox ListSong;
+        private ListBox ListCar;
         private TextBox txtTitle;
         private TextBox txtArtist;
         private TextBox txtRating;

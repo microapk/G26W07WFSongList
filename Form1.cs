@@ -1,69 +1,61 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
-namespace G26W07WFSongList
+namespace G26W07WFSongList // 프로젝트 네임스페이스는 기존 그대로 유지
 {
-
     public partial class Form1 : Form
     {
-        //private List<Song> _songs = [];
         private AppDbContext _db = new AppDbContext();
 
         public Form1()
         {
             InitializeComponent();
 
+            // cars.db 데이터베이스 및 테이블 생성
             _db.Database.EnsureCreated();
 
-            // Songs 테이블이 비어있으면 초기 데이터 추가
-            if (!_db.Songs.Any())
+            // Cars 테이블이 비어있으면 초기 자동차 데이터 추가
+            if (!_db.Cars.Any())
             {
-                List<Song> initialSongs = [
-                    new("Blue Hour", "LUNA8", 5),
-                    new("도깨비불 (Ghostfire)", "X-CROSS", 4),
-                    new("Spicy Love", "Cherry Bomb", 5),
-                    new("신기루 (Mirage)", "ONE-WAY", 3),
-                    new("Hypnotized", "NEXUS", 4),
-                    new("첫사랑 법칙 (First Love Rule)", "Pureum", 5),
-                    new("Black Out", "Viper", 4),
-                    new("한여름 밤의 꿈 (Midsummer)", "SOLO", 5),
-                    new("Cyberpunk", "GLITCH", 4),
-                    new("별자리 (Constellation)", "Aura", 3),
-                    new("Bad Boy, Good Girl", "TRIGGER", 5),
-                    new("소리쳐 (Shout Out)", "ZEAL", 4),
-                    new("Velvet Dress", "Siren", 5),
-                    new("그림자놀이 (Shadow)", "ECLIPSE", 4),
-                    new("Neon City", "Beat Runners", 3),
-                    new("비밀정원 (Secret)", "Fairy Tale", 5),
-                    new("Crash Landing", "Sledge", 4),
-                    new("눈이 부시게 (Blinding)", "DAWN", 5),
-                    new("Wildfire", "ASHE", 4),
-                    new("시간을 달려서 (Time Warp)", "Nova", 4)
+                List<Car> initialCars = [
+                    new("아반떼 (Avante)", "현대 (Hyundai)", 5),
+                    new("쏘렌토 (Sorento)", "기아 (Kia)", 5),
+                    new("그랜저 (Grandeur)", "현대 (Hyundai)", 4),
+                    new("카니발 (Carnival)", "기아 (Kia)", 5),
+                    new("G80", "제네시스 (Genesis)", 5),
+                    new("GV70", "제네시스 (Genesis)", 4),
+                    new("스포티지 (Sportage)", "기아 (Kia)", 4),
+                    new("싼타페 (Santa Fe)", "현대 (Hyundai)", 4),
+                    new("토레스 (Torres)", "KGM", 3),
+                    new("Model Y", "테슬라 (Tesla)", 5),
+                    new("5 Series", "BMW", 5),
+                    new("E-Class", "벤츠 (Mercedes-Benz)", 5),
+                    new("A6", "아우디 (Audi)", 4),
+                    new("Golf", "폭스바겐 (Volkswagen)", 3),
+                    new("911 Carrera", "포르쉐 (Porsche)", 5),
+                    new("XC60", "볼보 (Volvo)", 4),
+                    new("Camry", "토요타 (Toyota)", 4),
+                    new("ES 300h", "렉서스 (Lexus)", 5),
+                    new("Mustang", "포드 (Ford)", 4),
+                    new("Wrangler", "지프 (Jeep)", 3)
                 ];
 
-                _db.Songs.AddRange(initialSongs);
+                _db.Cars.AddRange(initialCars);
                 _db.SaveChanges();
             }
 
-            //var filteredSongs = _db.Songs
-            //    .Where(s => s.Rating >= 4)
-            //    .OrderByDescending(s => s.Rating);
-
-            //foreach (var song in filteredSongs) {
-            //    listSong.Items.Add(song);
-            //}
-
-            LoadSongs();
+            LoadCars();
         }
 
         private void OnAdd(object sender, EventArgs e)
         {
-            string title = txtTitle.Text.Trim();
-            string artist = txtArtist.Text.Trim();
+            // 기존 텍스트박스 컨트롤 이름(txtTitle, txtArtist, txtRating)을 그대로 활용
+            string model = txtTitle.Text.Trim();
+            string brand = txtArtist.Text.Trim();
 
-            if (title.Length == 0 || artist.Length == 0)
+            if (model.Length == 0 || brand.Length == 0)
             {
-                MessageBox.Show("제목과 가수를 모두 입력하세요.");
+                MessageBox.Show("모델명과 제조사를 모두 입력하세요.");
                 return;
             }
 
@@ -75,12 +67,12 @@ namespace G26W07WFSongList
                 return;
             }
 
-            var song = new Song(title, artist, rating);
+            var car = new Car(model, brand, rating);
 
-            _db.Songs.Add(song);
+            _db.Cars.Add(car);
             _db.SaveChanges();
 
-            LoadSongs();
+            LoadCars();
 
             txtTitle.Clear();
             txtArtist.Clear();
@@ -88,29 +80,30 @@ namespace G26W07WFSongList
             txtTitle.Focus();
         }
 
-        private void LoadSongs()
+        private void LoadCars()
         {
-            ListSong.Items.Clear();
+            ListCar.Items.Clear();
 
-            string keyword = txtFilter.Text.Trim();
+            // 검색어도 소문자로 변환해야 대문자 입력 시 정상 검색됨
+            string keyword = txtFilter.Text.Trim().ToLower();
 
-            var songs = _db.Songs
-                .Where(s => s.Title.ToLower().Contains(keyword) ||
-                    s.Artist.ToLower().Contains(keyword))
-                .OrderByDescending(s => s.Rating)
+            var cars = _db.Cars
+                .Where(c => c.Model.ToLower().Contains(keyword) ||
+                            c.Brand.ToLower().Contains(keyword))
+                .OrderByDescending(c => c.Rating)
                 .ToList();
 
-            foreach (var song in songs)
-                ListSong.Items.Add(song);
+            foreach (var car in cars)
+                ListCar.Items.Add(car);
         }
 
         private void OnDelete(object sender, EventArgs e)
         {
-            if (ListSong.SelectedItem is not Song song)
+            if (ListCar.SelectedItem is not Car car)
                 return;
 
             var result = MessageBox.Show(
-                $"{song.ToString()}\n\n노래를 삭제할까요?",
+                $"{car}\n\n이 자동차 정보를 삭제할까요?",
                 "삭제 확인",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -118,10 +111,10 @@ namespace G26W07WFSongList
             if (result != DialogResult.Yes)
                 return;
 
-            _db.Songs.Remove(song);
+            _db.Cars.Remove(car);
             _db.SaveChanges();
 
-            LoadSongs();
+            LoadCars();
 
             txtSelected.Clear();
             btnAdd.Enabled = false;
@@ -129,24 +122,25 @@ namespace G26W07WFSongList
 
         private void OnChanged(object sender, EventArgs e)
         {
-            if (ListSong.SelectedItem is not Song song)
+            if (ListCar.SelectedItem is not Car car)
             {
                 txtSelected.Clear();
                 btnAdd.Enabled = false;
                 return;
             }
 
-            txtSelected.Text = song.ToString();
+            txtSelected.Text = car.ToString();
             btnAdd.Enabled = true;
         }
 
         private void OnYoutube(object sender, EventArgs e)
         {
-            // 혹시 빈 공간 더블클릭할까봐 검사
-            if (ListSong.SelectedItem is not Song song)
+            // 빈 공간 더블클릭 방지
+            if (ListCar.SelectedItem is not Car car)
                 return;
 
-            string query = Uri.EscapeDataString($"노래방 {song.Title} {song.Artist}");
+            // 유튜브에 '자동차 시승기 [제조사] [모델명]'으로 검색
+            string query = Uri.EscapeDataString($"자동차 시승기 {car.Brand} {car.Model}");
 
             Process.Start(new ProcessStartInfo(
                 $"https://www.youtube.com/results?search_query={query}")
@@ -157,25 +151,27 @@ namespace G26W07WFSongList
 
         private void OnFilterChanged(object sender, EventArgs e)
         {
-            LoadSongs();
+            LoadCars();
         }
     }
 
-    public record Song(string Title, string Artist, int Rating)
+    // 자동차 데이터 레코드 (모델명, 제조사, 평점)
+    public record Car(string Model, string Brand, int Rating)
     {
         public int Id { get; init; }
 
-        public override string ToString() => $"{Title} - [{Artist}] ({Rating})";
+        public override string ToString() => $"{Model} - [{Brand}] (★{Rating})";
     }
 
+    // EF Core 데이터베이스 컨텍스트
     public class AppDbContext : DbContext
     {
-        public DbSet<Song> Songs { get; set; }
+        public DbSet<Car> Cars { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // songs.db 파일로 저장
-            optionsBuilder.UseSqlite("Data Source=songs.db");
+            // 기존 songs.db와 테이블 구조가 다르므로 cars.db라는 새 파일로 저장
+            optionsBuilder.UseSqlite("Data Source=cars.db");
         }
     }
 }
