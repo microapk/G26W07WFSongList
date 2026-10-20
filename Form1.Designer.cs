@@ -33,15 +33,17 @@
             txtArtist = new TextBox();
             txtRating = new TextBox();
             txtSelected = new TextBox();
+            btnAdd = new Button();
             btnDelete = new Button();
+            txtFilter = new TextBox();
             SuspendLayout();
             // 
             // ListSong
             // 
             ListSong.FormattingEnabled = true;
-            ListSong.Location = new Point(12, 12);
+            ListSong.Location = new Point(12, 52);
             ListSong.Name = "ListSong";
-            ListSong.Size = new Size(380, 384);
+            ListSong.Size = new Size(480, 344);
             ListSong.TabIndex = 0;
             ListSong.SelectedIndexChanged += OnChanged;
             ListSong.DoubleClick += OnYoutube;
@@ -81,23 +83,44 @@
             txtSelected.TabIndex = 4;
             txtSelected.TabStop = false;
             // 
+            // btnAdd
+            // 
+            btnAdd.Location = new Point(398, 402);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(94, 29);
+            btnAdd.TabIndex = 5;
+            btnAdd.Text = "추가";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += OnAdd;
+            // 
             // btnDelete
             // 
             btnDelete.Enabled = false;
-            btnDelete.Location = new Point(398, 439);
+            btnDelete.Location = new Point(398, 437);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(94, 29);
-            btnDelete.TabIndex = 5;
-            btnDelete.Text = "button1";
+            btnDelete.TabIndex = 6;
+            btnDelete.Text = "제거";
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += OnDelete;
+            // 
+            // txtFilter
+            // 
+            txtFilter.Location = new Point(12, 12);
+            txtFilter.Name = "txtFilter";
+            txtFilter.PlaceholderText = "제목 또는 가수 검색";
+            txtFilter.Size = new Size(480, 27);
+            txtFilter.TabIndex = 7;
+            txtFilter.TextChanged += OnFilterChanged;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(562, 480);
+            ClientSize = new Size(508, 480);
+            Controls.Add(txtFilter);
             Controls.Add(btnDelete);
+            Controls.Add(btnAdd);
             Controls.Add(txtSelected);
             Controls.Add(txtRating);
             Controls.Add(txtArtist);
@@ -116,6 +139,8 @@
         private TextBox txtArtist;
         private TextBox txtRating;
         private TextBox txtSelected;
+        private Button btnAdd;
         private Button btnDelete;
+        private TextBox txtFilter;
     }
 }

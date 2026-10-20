@@ -92,8 +92,11 @@ namespace G26W07WFSongList
         {
             ListSong.Items.Clear();
 
+            string keyword = txtFilter.Text.Trim();
+
             var songs = _db.Songs
-                //.Where(s => s.Rating >= 4)
+                .Where(s => s.Title.ToLower().Contains(keyword) ||
+                    s.Artist.ToLower().Contains(keyword))
                 .OrderByDescending(s => s.Rating)
                 .ToList();
 
@@ -121,7 +124,7 @@ namespace G26W07WFSongList
             LoadSongs();
 
             txtSelected.Clear();
-            btnDelete.Enabled = false;
+            btnAdd.Enabled = false;
         }
 
         private void OnChanged(object sender, EventArgs e)
@@ -129,12 +132,12 @@ namespace G26W07WFSongList
             if (ListSong.SelectedItem is not Song song)
             {
                 txtSelected.Clear();
-                btnDelete.Enabled = false;
+                btnAdd.Enabled = false;
                 return;
             }
 
             txtSelected.Text = song.ToString();
-            btnDelete.Enabled = true;
+            btnAdd.Enabled = true;
         }
 
         private void OnYoutube(object sender, EventArgs e)
@@ -150,6 +153,11 @@ namespace G26W07WFSongList
             {
                 UseShellExecute = true
             });
+        }
+
+        private void OnFilterChanged(object sender, EventArgs e)
+        {
+            LoadSongs();
         }
     }
 
